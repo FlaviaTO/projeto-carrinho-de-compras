@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { produtos } from "./produtos";
 import { useCarrinho } from "../../componentes/carrinho/carrinhoContext";
 import "./Produtos.css";
@@ -7,12 +8,22 @@ import Carrinho from "../../componentes/carrinho";
 export default function Produtos() {
   const { carrinhoAberto, adicionarAoCarrinho } = useCarrinho();
  
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   useEffect(() => {
     document.title = "Tela de Produtos";
   }, []);
 
   return (
     <>
+    <button onClick={handleLogout} className="botao-logout"> 
+      Sair
+    </button>
       <div
         className={`grid-produtos ${carrinhoAberto ? "carrinho-aberto" : ""}`}
       >

@@ -64,3 +64,17 @@
 .botao-carrinho:hover {
   background-color: #A855F7;
 }
+
+.botao-logout {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #af0303;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.botao-logout:hover {
+  background-color: rgb(201, 52, 82);
+}

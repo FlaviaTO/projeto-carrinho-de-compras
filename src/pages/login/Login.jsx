@@ -27,6 +27,8 @@ function Login() {
       return;
     }
 
+    localStorage.setItem("token", "usuario-logado");
+
     setMensagem("");
     navigate("/produtos");
   };
