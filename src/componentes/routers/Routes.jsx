@@ -3,6 +3,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../../pages/login/Login";
 import CriarLogin from "../../pages/criarLogin/CriarLogin";
 import Produtos from "../../pages/produtos/Produtos.jsx";
+import CriarProduto from "../../pages/crud/CriarProduto.jsx";
+import EditarProduto from "../../pages/crud/EditarProduto.jsx";
+import ListarProdutos from "../../pages/crud/ListarProdutos.jsx";
+import RemoverProduto from "../../pages/crud/RemoverProduto.jsx";
+import DashboardLayout from "../../pages/dashboardLayout/DashboardLayout.jsx";
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem("token");
@@ -26,13 +31,19 @@ function AppRoutes() {
       <Route path="/criar-login" element={<CriarLogin />} />
 
       <Route
-        path="/produtos"
+        path="/"
         element={
           <ProtectedRoute>
-            <Produtos />
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route path="produtos" element={<Produtos />} />
+        <Route path="criar-produto" element={<CriarProduto />} />
+        <Route path="editar-produto/:id" element={<EditarProduto />} />
+        <Route path="listar-produtos" element={<ListarProdutos />} />
+        <Route path="remover-produto/:id" element={<RemoverProduto />} />
+      </Route>
 
       <Route path="*" element={<NotFound />} />
     </Routes>

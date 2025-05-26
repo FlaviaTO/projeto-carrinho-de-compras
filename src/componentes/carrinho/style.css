@@ -141,8 +141,8 @@ h2 .remove-item {
     padding: 20px;
 }
 
-.produtos-container.carrinho-aberto {
-    grid-template-columns: repeat(5, 1fr);
+.grid-produtos.carrinho-aberto {
+    grid-template-columns: repeat(4, 1fr);
     margin-right: 350px;
     transition: all 0.3s ease;
 }

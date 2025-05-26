@@ -21,7 +21,7 @@ export default function Produtos() {
 
   return (
     <>
-    <button onClick={handleLogout} className="botao-logout"> 
+    <button className="botao-logout" onClick={handleLogout}> 
       Sair
     </button>
       <div
