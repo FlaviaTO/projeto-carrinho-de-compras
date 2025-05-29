@@ -20,7 +20,7 @@ function CriarLogin() {
 
   const senhasIguais = senha === confirmarSenha;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email.includes("@")) {
@@ -41,12 +41,30 @@ function CriarLogin() {
       return;
     }
 
-    setMensagem("Cadastro realizado com sucesso!");
-    setMensagemTipo("sucesso");
+    try {
+      const res = await fetch("http://localhost:3000/api/auth/registro", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome, email, senha }),
+      });
 
-    setTimeout(() => {
-      navigate("/login");
-    }, 1500);
+      if (!res.ok) {
+        const errData = await res.json();
+        setMensagem(errData.erro || "Falha ao cadastrar");
+        setMensagemTipo("erro");
+        return;
+      }
+
+      setMensagem("Cadastro realizado com sucesso!");
+      setMensagemTipo("sucesso");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (error) {
+      setMensagem("Erro na comunicação com o servidor");
+      setMensagemTipo("erro");
+    }
   };
 
   return (

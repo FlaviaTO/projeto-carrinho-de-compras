@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { produtos } from "./produtos";
 import { useCarrinho } from "../../componentes/carrinho/carrinhoContext";
+import { useProdutos } from "../../pages/produtos/ProdutoContext";
 import "./Produtos.css";
 import Carrinho from "../../componentes/carrinho";
 
 export default function Produtos() {
   const { carrinhoAberto, adicionarAoCarrinho } = useCarrinho();
- 
+  const { produtos, loading } = useProdutos();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -18,6 +18,8 @@ export default function Produtos() {
   useEffect(() => {
     document.title = "Tela de Produtos";
   }, []);
+
+  if (loading) return <p>Carregando produtos...</p>;
 
   return (
     <>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { produtos } from "../produtos/produtos";
+import { editarProduto, listarProdutos } from "../api/api";
 import "./ProdutoForm.css";
 
 export default function EditarProduto() {
@@ -9,22 +9,35 @@ export default function EditarProduto() {
   const [produto, setProduto] = useState(null);
 
   useEffect(() => {
-    const produtoSelecionado = produtos.find((p) => p.id === parseInt(id));
-    setProduto(produtoSelecionado);
+    async function carregarProdutos() {
+      const produtos = await listarProdutos();
+      const produtoSelecionado = produtos.find((p) => p.id === parseInt(id));
+      setProduto(produtoSelecionado);
+    }
+    carregarProdutos();
   }, [id]);
 
   const handleChange = (e) => {
     setProduto({ ...produto, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Produto editado:", produto);
-    alert("Produto editado com sucesso!");
-    navigate("/listar-produtos");
+    try {
+      await editarProduto(produto.id, {
+        ...produto,
+        valor: parseFloat(produto.valor),
+      });
+      console.log("Produto editado:", produto);
+      alert("Produto editado com sucesso!");
+      navigate("/listar-produtos");
+    } catch (err) {
+      alert("Erro ao editar produto!");
+      console.error(err);
+    }
   };
 
-  if (!produto) return <p>Produto não encontrado.</p>;
+  if (!produto) return <p>Carregando produto...</p>;
 
   return (
     <div className="form-container">

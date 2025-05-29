@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { produtos } from "../produtos/produtos";
 import "./ProdutoForm.css";
+import { listarProdutos, removerProduto } from "../api/api";
 
 export default function RemoverProduto() {
   const { id } = useParams();
@@ -9,17 +9,27 @@ export default function RemoverProduto() {
   const [produto, setProduto] = useState(null);
 
   useEffect(() => {
-    const produtoSelecionado = produtos.find((p) => p.id === parseInt(id));
-    setProduto(produtoSelecionado);
+    async function carregarProdutos() {
+      const produtos = await listarProdutos();
+      const produtoSelecionado = produtos.find((p) => p.id === parseInt(id));
+      setProduto(produtoSelecionado);
+    }
+    carregarProdutos();
   }, [id]);
 
-  const handleRemover = () => {
-    console.log("Produto removido:", produto);
-    alert("Produto removido com sucesso!");
-    navigate("/listar-produtos");
+  const handleRemover = async () => {
+    try {
+      await removerProduto(produto.id);
+      console.log("Produto removido:", produto);
+      alert("Produto removido com sucesso!");
+      navigate("/listar-produtos");
+    } catch (e) {
+      alert("Erro ao remover produto!");
+      console.error(e);
+    }
   };
 
-  if (!produto) return <p>Produto não encontrado.</p>;
+  if (!produto) return <p>Carregando produto...</p>;
 
   return (
     <div className="form-container">

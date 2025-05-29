@@ -14,7 +14,7 @@ function Login() {
     document.title = "Tela de Login";
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!email.includes("@")) {
@@ -27,10 +27,28 @@ function Login() {
       return;
     }
 
-    localStorage.setItem("token", "usuario-logado");
+    try {
+      const res = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+      });
 
-    setMensagem("");
-    navigate("/produtos");
+      if (!res.ok) {
+        const errData = await res.json();
+        setMensagem(errData.erro || "Falha ao fazer login");
+        return;
+      }
+
+      const data = await res.json();
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userName", data.nome || "Usuário");
+
+      setMensagem("");
+      navigate("/produtos");
+    } catch (error) {
+      setMensagem("Erro na comunicação com o servidor");
+    }
   };
 
   return (
