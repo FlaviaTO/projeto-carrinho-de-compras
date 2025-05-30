@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "./ProdutoForm.css";
-import { listarProdutos, removerProduto } from "../api/api";
+import { listarProdutos } from "../api/api";
+import { useProdutos } from "../produtos/ProdutoContext";
 
 export default function RemoverProduto() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [produto, setProduto] = useState(null);
+  const {excluirProduto} = useProdutos();
 
   useEffect(() => {
     async function carregarProdutos() {
@@ -19,7 +21,7 @@ export default function RemoverProduto() {
 
   const handleRemover = async () => {
     try {
-      await removerProduto(produto.id);
+      await excluirProduto(produto.id);
       console.log("Produto removido:", produto);
       alert("Produto removido com sucesso!");
       navigate("/listar-produtos");

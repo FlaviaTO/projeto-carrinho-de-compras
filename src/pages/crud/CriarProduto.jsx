@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./ProdutoForm.css";
-import { criarProduto } from "../api/api";
+import { useProdutos } from "../produtos/ProdutoContext";
 
 export default function CriarProduto() {
   const [produto, setProduto] = useState({
@@ -9,6 +9,8 @@ export default function CriarProduto() {
     imagem: "",
   });
 
+  const { adicionarProduto } = useProdutos();
+
   const handleChange = (e) => {
     setProduto({ ...produto, [e.target.name]: e.target.value });
   };
@@ -16,8 +18,9 @@ export default function CriarProduto() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await criarProduto({ ...produto, valor: parseFloat(produto.valor) });
+      await adicionarProduto({ ...produto, valor: parseFloat(produto.valor) });
       alert("Produto criado com sucesso!");
+      setProduto({ nome: "", valor: "", imagem: "" });
     } catch (err) {
       alert("Erro ao criar produto!");
       console.error(err);

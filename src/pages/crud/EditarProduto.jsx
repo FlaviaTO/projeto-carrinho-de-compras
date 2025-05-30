@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { editarProduto, listarProdutos } from "../api/api";
+import { listarProdutos } from "../api/api";
 import "./ProdutoForm.css";
+import { useProdutos } from "../produtos/ProdutoContext";
 
 export default function EditarProduto() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [produto, setProduto] = useState(null);
+  const { atualizarProduto } = useProdutos();
 
   useEffect(() => {
     async function carregarProdutos() {
@@ -24,7 +26,7 @@ export default function EditarProduto() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await editarProduto(produto.id, {
+      await atualizarProduto(produto.id, {
         ...produto,
         valor: parseFloat(produto.valor),
       });

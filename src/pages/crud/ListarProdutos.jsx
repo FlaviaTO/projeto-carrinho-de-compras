@@ -1,26 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./ProdutoForm.css";
-import { listarProdutos } from "../api/api";
+import { useProdutos } from "../produtos/ProdutoContext";
 
 export default function ListarProdutos() {
-  const [produtos, setProdutos] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {produtos, loading } = useProdutos();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const lista = await listarProdutos();
-        setProdutos(lista);
-      } catch (e) {
-        console.error("Erro ao buscar produtos: ", e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, []);
 
   if (loading) return <p>Carregando produtos...</p>;
 
